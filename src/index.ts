@@ -45,7 +45,7 @@ export { PluginConfigSchema } from "./config/schema";
  * - Lifecycle hooks: session management, todo continuation, context injection, devops integration
  * - JSONC config with env var substitution (${AZURE_DEVOPS_EXT_PAT} etc.)
  *
- * @see https://github.com/fullerdev/fullerdev
+ * @see https://github.com/ao-barbosa/fullerdev
  */
 export const FullerDevPlugin: Plugin = async (ctx) => {
   console.log("[fullerdev] Plugin function invoked");
