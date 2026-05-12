@@ -13,14 +13,23 @@
   "files": [
     "dist/",
     "src/skills/",
-    "bin/"
+    "bin/",
+    "fullerdev.schema.json",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod && bun run build:declarations",
     "build:declarations": "tsc -p tsconfig.build.json",
     "dev": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod --watch",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "bun run build"
+    "lint": "echo 'no linter configured yet'",
+    "check:ci": "bun run typecheck && bun run build",
+    "prepare": "bun run build",
+    "prepublishOnly": "bun run build",
+    "release:patch": "npm version patch && git push --follow-tags && npm publish",
+    "release:minor": "npm version minor && git push --follow-tags && npm publish",
+    "release:major": "npm version major && git push --follow-tags && npm publish"
   },
   "dependencies": {
     "@opencode-ai/plugin": "^1.0.85",
@@ -46,6 +55,10 @@
     "type": "git",
     "url": "https://github.com/fullerdev/fullerdev"
   },
+  "bugs": {
+    "url": "https://github.com/fullerdev/fullerdev/issues"
+  },
+  "homepage": "https://github.com/fullerdev/fullerdev#readme",
   "engines": {
     "bun": ">=1.0.0"
   }

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "fullerdev",
+  "description": "Configuration schema for fullerdev plugin for OpenCode — Azure DevOps-native multi-agent orchestration.",
+  "type": "object",
+  "properties": {
+    "preset": {
+      "description": "Name of the active preset to use for agent model/skill/MCP assignment.",
+      "type": "string",
+      "default": "opencode-go"
+    },
+    "presets": {
+      "description": "Named collections of agent model/skill/MCP assignments.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "orchestrator": { "$ref": "#/$defs/agentConfig" },
+          "oracle": { "$ref": "#/$defs/agentConfig" },
+          "librarian": { "$ref": "#/$defs/agentConfig" },
+          "explorer": { "$ref": "#/$defs/agentConfig" },
+          "designer": { "$ref": "#/$defs/agentConfig" },
+          "fixer": { "$ref": "#/$defs/agentConfig" },
+          "devops": { "$ref": "#/$defs/agentConfig" }
+        },
+        "required": ["orchestrator", "oracle", "librarian", "explorer", "designer", "fixer", "devops"],
+        "additionalProperties": false
+      }
+    },
+    "azureDevOps": {
+      "description": "Azure DevOps connection settings.",
+      "type": "object",
+      "properties": {
+        "orgUrl": {
+          "description": "Azure DevOps organization URL (e.g., 'https://dev.azure.com/myorg').",
+          "type": "string",
+          "format": "uri"
+        },
+        "project": {
+          "description": "Default Azure DevOps project name.",
+          "type": "string"
+        },
+        "pat": {
+          "description": "Personal Access Token. Supports ${ENV_VAR} syntax for environment variable substitution. Falls back to AZURE_DEVOPS_EXT_PAT env var.",
+          "type": "string"
+        },
+        "defaultAreaPath": {
+          "description": "Default Area Path for work items.",
+          "type": "string"
+        },
+        "defaultIterationPath": {
+          "description": "Default Iteration Path for work items.",
+          "type": "string"
+        }
+      },
+      "required": ["orgUrl"],
+      "additionalProperties": false
+    },
+    "disabledMcps": {
+      "description": "Globally disabled MCP server IDs.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "disabledHooks": {
+      "description": "Globally disabled hook IDs.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "disabledSkills": {
+      "description": "Globally disabled skill IDs.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "disabledAgents": {
+      "description": "Globally disabled agent names. Disabled agents are not instantiated and cannot be delegated to.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  },
+  "required": ["preset"],
+  "additionalProperties": false,
+  "$defs": {
+    "agentConfig": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "description": "Provider/model ID (e.g., 'opencode-go/deepseek-v4-pro').",
+          "type": "string"
+        },
+        "variant": {
+          "description": "Thinking/reasoning effort variant.",
+          "type": "string",
+          "enum": ["low", "medium", "high", "max"]
+        },
+        "skills": {
+          "description": "Skills assigned to this agent. Use '*' for all, '!name' to exclude.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "mcps": {
+          "description": "MCP servers available to this agent. Use '*' for all, '!name' to exclude.",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["model"],
+      "additionalProperties": false
+    }
+  }
+}
