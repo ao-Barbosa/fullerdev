@@ -1,0 +1,52 @@
+{
+  "name": "fullerdev",
+  "version": "0.1.0",
+  "description": "Opinionated OpenCode plugin for multi-agent orchestration. Specialized subagents, built-in MCPs, skills, hooks, tools — tuned for Azure DevOps workflows (Work Items, Git, Wiki, Pipelines).",
+  "license": "MIT",
+  "author": "Arthur",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "fullerdev": "./bin/setup.js"
+  },
+  "files": [
+    "dist/",
+    "src/skills/",
+    "bin/"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod && bun run build:declarations",
+    "build:declarations": "tsc -p tsconfig.build.json",
+    "dev": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run build"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.0.85",
+    "azure-devops-node-api": "^14.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "bun-types": "latest",
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "fullerdev",
+    "multi-agent",
+    "orchestration",
+    "subagents",
+    "azure-devops",
+    "devops"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullerdev/fullerdev"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
