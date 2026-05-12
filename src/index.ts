@@ -1,5 +1,6 @@
 import type { Plugin, PluginModule, Hooks } from "@opencode-ai/plugin";
 import { loadConfig, getActivePreset } from "./config/loader";
+import { recordTuiAgentModels } from "./tui/tui-state";
 
 // Module-level log: fires on import (confirms OpenCode loaded the module)
 console.log("[fullerdev] Module loaded (v0.1.0)");
@@ -65,18 +66,31 @@ export const FullerDevPlugin: Plugin = async (ctx) => {
     throw err;
   }
 
-  // Phase 2: Build tool registry
+  // Phase 2: Persist agent→model mappings for TUI sidebar
+  recordTuiAgentModels({
+    agentModels: {
+      orchestrator: preset.orchestrator.model,
+      oracle: preset.oracle.model,
+      librarian: preset.librarian.model,
+      explorer: preset.explorer.model,
+      designer: preset.designer.model,
+      fixer: preset.fixer.model,
+      devops: preset.devops.model,
+    },
+  });
+
+  // Phase 3: Build tool registry
   const coreTools = createCoreTools();
   const devopsTools = createDevOpsTools();
 
-  // Phase 3: Build MCP definitions
+  // Phase 4: Build MCP definitions
   const builtinMcps = getBuiltinMcps(config);
   const allMcpIds = builtinMcps.map((m) => m.id);
 
-  // Phase 4: Build hooks
+  // Phase 5: Build hooks
   const composedHooks = createAllHooks(config);
 
-  // Phase 5: Assemble and return the plugin interface
+  // Phase 6: Assemble and return the plugin interface
   return {
     /**
      * Config hook — registers agents, MCPs, and other configuration
@@ -87,6 +101,9 @@ export const FullerDevPlugin: Plugin = async (ctx) => {
       // Ensure sections exist
       input.agent ??= {};
       input.mcp ??= {};
+
+      // Make Orchestrator the default agent on startup
+      (input as any).default_agent = "orchestrator";
 
       // Register all 7 subagents
       input.agent["orchestrator"] = {

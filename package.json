@@ -7,11 +7,22 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./tui": {
+      "import": "./dist/tui/index.js",
+      "types": "./dist/tui/index.d.ts"
+    }
+  },
   "bin": {
     "fullerdev": "./bin/setup.js"
   },
   "files": [
     "dist/",
+    "dist/tui/",
     "src/skills/",
     "bin/",
     "fullerdev.schema.json",
@@ -19,7 +30,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod && bun run build:declarations",
+    "build": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod && bun build src/tui/index.ts --outdir dist/tui --target node --external @opentui/core --external @opentui/solid --external @opencode-ai/plugin && bun run build:declarations",
     "build:declarations": "tsc -p tsconfig.build.json",
     "dev": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod --watch",
     "typecheck": "tsc --noEmit",
@@ -37,6 +48,8 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@opentui/core": "0.2.6",
+    "@opentui/solid": "0.2.6",
     "@types/node": "^20.11.0",
     "bun-types": "latest",
     "typescript": "^5.4.0"
