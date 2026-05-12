@@ -13,14 +13,23 @@
   "files": [
     "dist/",
     "src/skills/",
-    "bin/"
+    "bin/",
+    "fullerdev.schema.json",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod && bun run build:declarations",
     "build:declarations": "tsc -p tsconfig.build.json",
     "dev": "bun build src/index.ts --outdir dist --target node --external @opencode-ai/plugin --external azure-devops-node-api --external zod --watch",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "bun run build"
+    "lint": "echo 'no linter configured yet'",
+    "check:ci": "bun run typecheck && bun run build",
+    "prepare": "bun run build",
+    "prepublishOnly": "bun run build",
+    "release:patch": "bun version patch && git push --follow-tags && bun publish",
+    "release:minor": "bun version minor && git push --follow-tags && bun publish",
+    "release:major": "bun version major && git push --follow-tags && bun publish"
   },
   "dependencies": {
     "@opencode-ai/plugin": "^1.0.85",
@@ -44,9 +53,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fullerdev/fullerdev"
+    "url": "https://github.com/ao-barbosa/fullerdev"
   },
+  "bugs": {
+    "url": "https://github.com/ao-barbosa/fullerdev/issues"
+  },
+  "homepage": "https://github.com/ao-barbosa/fullerdev#readme",
   "engines": {
-    "bun": ">=1.0.0"
+    "bun": ">=1.3.0"
   }
 }
