@@ -1,6 +1,6 @@
 {
   "name": "fullerdev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Opinionated OpenCode plugin for multi-agent orchestration. Specialized subagents, built-in MCPs, skills, hooks, tools — tuned for Azure DevOps workflows (Work Items, Git, Wiki, Pipelines).",
   "license": "MIT",
   "author": "Arthur",
@@ -38,9 +38,9 @@
     "check:ci": "bun run typecheck && bun run build",
     "prepare": "bun run build",
     "prepublishOnly": "bun run build",
-    "release:patch": "bun version patch && git push --follow-tags && bun publish",
-    "release:minor": "bun version minor && git push --follow-tags && bun publish",
-    "release:major": "bun version major && git push --follow-tags && bun publish"
+    "release:patch": "bun x bumpx patch && git push --follow-tags && bun publish",
+    "release:minor": "bun x bumpx minor && git push --follow-tags && bun publish",
+    "release:major": "bun x bumpx major && git push --follow-tags && bun publish"
   },
   "dependencies": {
     "@opencode-ai/plugin": "^1.0.85",
